@@ -8,9 +8,252 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    padding-top: 60px; /* Atur sesuai tinggi navbar kamu */
+}
+
+.navbar {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.text-muted {
+  color: #ffffff; /* Atau warna abu-abu yang sesuai */
+}
+
+
+.search-container {
+  margin-top: 20px;
+  height: 50px;
+  width: 84vw;
+  border-radius: 10px;
+  background-color: #ffffff; /* Full putih */
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+}
+
+.search-container input {
+  background-color: #ffffff; /* Pastikan input juga putih */
+  color: #000000;
+}
+
+.search-container input::placeholder {
+  color: #aaa; /* Placeholder tetap sedikit abu agar terbaca */
+}
+
+.search-container i {
+  cursor: pointer;
+}
+
+
+.container-fluid {
+    width: 85vw;
+    border-radius: 15px;
+}
+
+.card {
+    border-radius: 15px;
+    
+}
+
+.form-control {
+    border: none;
+    border-bottom: 1px solid #d6d6d6;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom-color: #198754
+    ;
+}
+
+.form-select {
+    width: 130px;
+    border-radius: 20px;
+}
+
+.task-card {
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: block;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    width: 84vw;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* natural soft shadow */
+    
+}
+
+.task-info {
+  display: flex;
+  flex-wrap: wrap;  /* Membuat elemen di dalamnya bisa membungkus */
+}
+
+.task-title {
+   font-size: 14px;
+}
+
+
+.task-meta {
+    font-size: 10px;
+    opacity: 0.8;
+}
+.task-options {
+    position: relative;
+}
+.dropdown-menu {
+    background-color: #fff;
+    color: #000;
+}
+.fancy-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    position: relative;
+  }
+  
+  .fancy-checkbox input {
+    display: none;
+  }
+  
+  .fancy-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #666;
+    border-radius: 100px;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  .fancy-checkbox input:checked + .checkmark {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+  }
+  
+  .fancy-checkbox .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: scale(0) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  
+  .fancy-checkbox input:checked + .checkmark::after {
+    transform: scale(1) rotate(45deg);
+  }
+  
+  .fancy-checkbox .label-text {
+    transition: color 0.2s, text-decoration 0.2s;
+  }
+  
+  
+  .success {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 320px;
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    background: #84D65A;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px -3px #111;
+    margin: 16px auto;
+    z-index: 999;
+  }
+  
+  .success__icon {
+    width: 20px;
+    height: 20px;
+    transform: translateY(-2px);
+    margin-right: 8px;
+  }
+  
+  .success__icon path {
+    fill: #393A37;
+  }
+  
+  .success__title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #393A37;
+  }
+  
+  .success__close {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .success__close path {
+    fill: #393A37;
+  }
+  
+  /* From Uiverse.io by andrew-demchenk0 */ 
+.error {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  max-width: 300px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  background: #EF665B;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px -3px #111;
+}
+
+.error__icon {
+  width: 20px;
+  height: 20px;
+  transform: translateY(-2px);
+  margin-right: 8px;
+}
+
+.error__icon path {
+  fill: #fff;
+}
+
+.error__title {
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+}
+
+.error__close {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.error__close path {
+  fill: #fff;
+}
+
+</style>
 
 <body>
 
@@ -39,7 +282,7 @@
             <button type="button" class="btn-close btn-sm position-absolute top-0 end-0 m-1"
                 style="transform: scale(0.8);" aria-label="Close" id="closeFormBtn"></button>
             <div class="card-body">
-                <form action="{{ route('tasks.store') }}" method="POST">
+                <form action="https://a4a3-114-122-70-254.ngrok-free.app/tasks" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label" style="margin-top: 20px;">Nama Tugas</label>
@@ -158,7 +401,7 @@
     <!-- Inputan Search -->
     <div class="d-flex justify-content-center align-items-center mt-3 d-none" id="searchFormContainer"
         style="display: none;">
-        <form action="{{ route('tasks.index') }}" method="GET"
+        <form action="https://a4a3-114-122-70-254.ngrok-free.app/tasks" method="GET"
             class="search-container d-flex align-items-center px-3">
             <i class="fas fa-search text-muted me-2"></i>
             <input type="text" name="keyword" id="searchInput"
@@ -211,8 +454,7 @@
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
 
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                                style="display: inline;">
+                            <form action="{{ url('https://a4a3-114-122-70-254.ngrok-free.app/tasks/' . $task->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-light text-danger" title="Hapus">
