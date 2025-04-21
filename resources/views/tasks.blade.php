@@ -9,12 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
 <style>
 body {
     font-family: 'Poppins', sans-serif;
-    padding-top: 60px; /* Atur sesuai tinggi navbar kamu */
+    padding-top: 60px;
 }
 
 .navbar {
@@ -22,7 +22,7 @@ body {
 }
 
 .text-muted {
-  color: #ffffff; /* Atau warna abu-abu yang sesuai */
+  color: #ffffff;
 }
 
 
@@ -31,18 +31,18 @@ body {
   height: 50px;
   width: 84vw;
   border-radius: 10px;
-  background-color: #ffffff; /* Full putih */
+  background-color: #ffffff;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
 }
 
 .search-container input {
-  background-color: #ffffff; /* Pastikan input juga putih */
+  background-color: #ffffff;
   color: #000000;
 }
 
 .search-container input::placeholder {
-  color: #aaa; /* Placeholder tetap sedikit abu agar terbaca */
+  color: #aaa; 
 }
 
 .search-container i {
@@ -91,13 +91,13 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 84vw;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* natural soft shadow */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     
 }
 
 .task-info {
   display: flex;
-  flex-wrap: wrap;  /* Membuat elemen di dalamnya bisa membungkus */
+  flex-wrap: wrap; 
 }
 
 .task-title {
@@ -253,6 +253,77 @@ body {
   fill: #fff;
 }
 
+.cookie-card {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 320px;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+  z-index: 9999;
+}
+
+.title {
+  font-weight: 600;
+  color: rgb(31 41 55);
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(75 85 99);
+}
+
+.description a {
+  color: rgb(59 130 246);
+  text-decoration: none;
+}
+
+.description a:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  column-gap: 1rem;
+}
+
+.pref {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(31 41 55);
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pref:hover {
+  color: rgb(156 163 175);
+}
+
+.accept {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  background-color: #198754;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  color: #fff;
+  padding: 0.625rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.accept:hover {
+  background-color: #198754;
+}
+
 </style>
 
 <body>
@@ -268,6 +339,20 @@ body {
         </div>
     </nav>
 
+    <!-- Cookies alert -->
+    @if (!request()->cookie('user_id'))
+    <div class="cookie-card" id="cookieCard">
+        <span class="title">🍪 Cookie Notice</span>
+        <p class="description">
+            Hey! Kami pakai cookie biar tugas-tugas kamu tetap nyambung dan nggak hilang. 
+        </p>
+        <div class="actions">
+            <button class="accept" onclick="acceptCookie()">Accept</button>
+        </div>
+    </div>
+@endif
+
+
     <!-- Floating button -->
     <button id="taskFloatBtn" class="btn btn-success rounded-circle shadow"
         style="position: fixed; bottom: 40px; right: 30px; width: 60px; height: 60px; z-index: 1050;">
@@ -282,7 +367,7 @@ body {
             <button type="button" class="btn-close btn-sm position-absolute top-0 end-0 m-1"
                 style="transform: scale(0.8);" aria-label="Close" id="closeFormBtn"></button>
             <div class="card-body">
-                <form action="https://a4a3-114-122-70-254.ngrok-free.app/tasks" method="POST">
+                <form action="{{ route('tasks.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label" style="margin-top: 20px;">Nama Tugas</label>
@@ -401,7 +486,7 @@ body {
     <!-- Inputan Search -->
     <div class="d-flex justify-content-center align-items-center mt-3 d-none" id="searchFormContainer"
         style="display: none;">
-        <form action="https://a4a3-114-122-70-254.ngrok-free.app/tasks" method="GET"
+        <form action="{{ route('tasks.index') }}" method="GET"
             class="search-container d-flex align-items-center px-3">
             <i class="fas fa-search text-muted me-2"></i>
             <input type="text" name="keyword" id="searchInput"
@@ -454,7 +539,7 @@ body {
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
 
-                            <form action="{{ url('https://a4a3-114-122-70-254.ngrok-free.app/tasks/' . $task->id) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-light text-danger" title="Hapus">
@@ -479,14 +564,14 @@ body {
             // Tampilkan form tambah tugas
             form.style.display = 'block';
 
-            // Animasi scroll
+            // scroll
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
 
-        // Tombol close form tambah tugas
+        // Tombol close form
         document.getElementById('closeFormBtn').addEventListener('click', function() {
             document.getElementById('taskForm').style.display = 'none';
         });
@@ -595,6 +680,12 @@ body {
             });
         });
     </script>
+    <script>
+        function acceptCookie() {
+            document.getElementById('cookieCard').style.display = 'none';
+        }
+    </script>
+    
 
 </body>
 
