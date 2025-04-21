@@ -13,5 +13,6 @@ class Task extends Model
         'title',
         'priority',
         'due_date',
+        'user_id',
     ];
 }
